@@ -177,3 +177,8 @@ contract EC {
     }
 
 }
+contract Main {
+    function Main()
+    {
+    }
+}
