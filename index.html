@@ -6,46 +6,48 @@
           src="https://code.jquery.com/jquery-3.3.1.min.js"
           integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
           crossorigin="anonymous"></script>
-          <script src="https://cdn.jsdelivr.net/npm/web3@1.0.0-beta.33/src/index.min.js">
-              
-          </script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/ricmoo/aes-js/e27b99df/index.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/web3@1.0.0-beta.33/src/index.min.js"></script>
     </head>
     <body>
         <div id="form">
             <p>Введите сообщение:</p>
-            <input type="text" id="msg" value="ok">
-            <p>Введите public(256):</p>
-            <input type="text" id="hash" value="00d6cee17c766360c9d9721c8a950b3f4b06464da84cda3cd9987dd7f1a0ea32">
+            <input type="text" id="message" value="ok">
+            <p>Введите public блока:</p>
+            <input type="text" id="public_block" value="00d6cee17c766360c9d9721c8a950b3f4b06464da84cda3cd9987dd7f1a0ea32">
+            <p>Введите public клиента:</p>
+            <input type="text" id="public_client" value="00d6cee17c766360c9d9721c8a950b3f4b06464da84cda3cd9987dd7f1a0ea32">
             <p>К отправке:</p>
             <div id="encrypted"></div>
-            <p>Введите private:</p>
-            <input type="text" id="priv" value="00d6cee17c766360c9d9721c8a950b3f4b06464da84cda3cd9987dd7f1a0ea32">
+            <hr>
+            <h2>Для проерки</h2>
+            <p>Введите private найденного блока:</p>
+            <input type="text" id="private_block" value="00d6cee17c766360c9d9721c8a950b3f4b06464da84cda3cd9987dd7f1a0ea32">
+            <p>Введите private вашего контрагента:</p>
+            <input type="text" id="private_client" value="00d6cee17c766360c9d9721c8a950b3f4b06464da84cda3cd9987dd7f1a0ea32">
             <p>Decrypted:</p>
             <div id="decrypted"></div>
         </div>
         <script type="text/javascript">
             $(document).ready(function(){
-               $('#hash, #msg').on('keyup change', function(){
-                    var key = aesjs.utils.hex.toBytes($('#hash').val());
-                    var textBytes = aesjs.utils.utf8.toBytes($('#msg').val());
-                    var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
-                    var encryptedBytes = aesCtr.encrypt(textBytes);// we have secret here
-                    
-                    $('#encrypted').html(encryptWithPublicKey(
-                        $('#hash').val(),
-                        aesjs.utils.hex.fromBytes(encryptedBytes)
-                    ));
-                    
-                    var decrypted = decryptWithPrivateKey(
-                        $('#hash').val(),
-                        aesjs.utils.hex.fromBytes(encryptedBytes)
+               $('#message, #public_block, #public_client').on('keyup change', function(){
+                    var encrypted1 = encryptWithPublicKey(
+                        $('#message').val(),
+                        $('#public_client').val()
                     );
-
-                    var encryptedBytes = aesjs.utils.hex.toBytes(decrypted);
-                    var aesCtr = new aesjs.ModeOfOperation.ctr($('#priv').val(), new aesjs.Counter(5));
-                    var decryptedBytes = aesCtr.decrypt(encryptedBytes);
-                    $('#decrypted').html(aesjs.utils.utf8.fromBytes(decryptedBytes));
+                    var encrypted2 = encryptWithPublicKey(
+                        encrypted1,
+                        $('#public_block').val()
+                    );
+                    
+                    var decrypted2 = decryptWithPrivateKey(
+                        $('#private_block').val(),
+                        encrypted2
+                    );
+                    var decrypted1 = decryptWithPrivateKey(
+                        $('#private_client').val(),
+                        decrypted2
+                    );
+                    $('#decrypted').html(decrypted1);
                });
                $('#hash').change();
             });
