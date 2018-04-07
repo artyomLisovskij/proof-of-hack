@@ -6,28 +6,28 @@
           src="https://code.jquery.com/jquery-3.3.1.min.js"
           integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
           crossorigin="anonymous"></script>
-          <script src="https://cdn.jsdelivr.net/npm/web3@1.0.0-beta.33/src/index.min.js"></script>
+          <script src="lib.js"></script>
     </head>
     <body>
         <div id="form">
             <p>Введите сообщение:</p>
             <input type="text" id="message" value="ok">
             <p>Введите public блока:</p>
-            <input type="text" id="public_block" value="00d6cee17c766360c9d9721c8a950b3f4b06464da84cda3cd9987dd7f1a0ea32">
+            <input type="text" id="public_block" value="">
             <p>Введите public клиента:</p>
-            <input type="text" id="public_client" value="00d6cee17c766360c9d9721c8a950b3f4b06464da84cda3cd9987dd7f1a0ea32">
+            <input type="text" id="public_client" value="">
             <p>К отправке:</p>
             <div id="encrypted"></div>
             <hr>
             <h2>Для проерки</h2>
             <p>Введите private найденного блока:</p>
-            <input type="text" id="private_block" value="00d6cee17c766360c9d9721c8a950b3f4b06464da84cda3cd9987dd7f1a0ea32">
+            <input type="text" id="private_block" value="">
             <p>Введите private вашего контрагента:</p>
-            <input type="text" id="private_client" value="00d6cee17c766360c9d9721c8a950b3f4b06464da84cda3cd9987dd7f1a0ea32">
+            <input type="text" id="private_client" value="">
             <p>Decrypted:</p>
             <div id="decrypted"></div>
         </div>
-        <script type="text/javascript">
+        <!--<script type="text/javascript">
             $(document).ready(function(){
                $('#message, #public_block, #public_client').on('keyup change', function(){
                     var encrypted1 = encryptWithPublicKey(
@@ -48,10 +48,12 @@
                         decrypted2
                     );
                     $('#decrypted').html(decrypted1);
-               });
-               $('#hash').change();
+                });
+                $('#hash').change();
+                
+                
             });
-        </script>
+        </script>-->
     </body>
 </html>
 
