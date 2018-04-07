@@ -38,6 +38,8 @@ contract Main {
         string pub2; // task to solve #2
         uint256 priv1; // proof of hack of solve #1
         uint256 priv2; // proof of hack of solve #2
+        string hashOfPriv1; // hash of private #1
+        string hashOfPriv2; // hash of private #2
         bool mined; // true/false is transaction mined
         bool filled; // true/false is transaction filled and ready to mine 
     }
@@ -45,6 +47,9 @@ contract Main {
     mapping (uint256 => Transaction) transactions;
     
     uint256 difficulty;
+    
+    event New(address from, address to, uint256 id);
+    event MineMe(uint256 id);
     
     // ---- erc20 ---- 
     mapping (address => uint256) public erc20tokens;
@@ -60,9 +65,13 @@ contract Main {
         return true;
     }
     // ---- /erc20 ---- 
+    
     function mined(string _privKey1, string _privKey2, uint transactionID) public returns (uint256) {
-        // if sha3(_privKey1 == hash1 && _privKey2 == hash2)
-        // put them to transaction
+        require(sha3(_privKey1) == transactions[transactionID].hashOfPriv1);
+        require(sha3(_privKey2) == transactions[transactionID].hashOfPriv2);
+        transactions[transactionID].priv1 = _privKey1;
+        transactions[transactionID].priv2 = _privKey2;
+        transactions[transactionID].mined = true;
         erc20tokens[msg.sender].add(1);
         Transfer(address(this), msg.sender, tokens);
         return erc20tokens[msg.sender];
@@ -72,14 +81,32 @@ contract Main {
         return (transactions[transactionID].priv1, transaction[transactionID].priv2)
     }
     
-    function getTransaction(uint transactionID) public returns (address, address, bool, string, string) {
-        return transactions[transactionID].priv1 
+    // TODO: who can do it?
+    function setDifficulty(uint newDiff) public returns (bool) {
+        difficulty = newDiff;
+        return true;
+    }
+
+    function newTransaction(string secret, address _address, string _public, string _hash) public returns (uint256) {
+        transactionID = numTransactions++;
+        transactions[transactionID] = Transaction(msg.sender, _address, secret, '', _public, '', 0, 0, _hash, '', false, false);
+        New(msg.sender, _address, transactionID);
+        return transactionID;
+    }
+    
+    function approveTransaction(uint transactionID, string secret, string _public, string _hash) public returns (uint256) {
+        currentTransaction = transactions[transactionID];
+        require(currentTransaction.to == msg.sender);
+        
+        currentTransaction.secret_to = secret;
+        currentTransaction.pub2 = _public;
+        currentTransaction.hashOfPriv2 = _hash;
+        currentTransaction.filled = true;
+        MineMe(transactionID);
+        return transactionID;
     }
     
     function Main() {
-        // create 0 block and 0 transaction
         difficulty = 2000;
-        tokens[msg.sender].add(10);
-        newTransaction(msg.sender, 10, '');
     }
 }
