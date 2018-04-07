@@ -1,14 +1,28 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const EthCrypto = require('eth-crypto');
+Number.prototype.pad = function(size) {
+  var s = String(this);
+  while (s.length < (size || 2)) {s = "0" + s;}
+  return s;
+}
 $(document).ready(function(){
   var identity_block = EthCrypto.createIdentity();
   var identity_client = EthCrypto.createIdentity();
   
-  $('#public_block').val(identity_block['publicKey']);
-  $('#private_block').val(identity_block['privateKey']);
-  
   $('#public_client').val(identity_client['publicKey']);
   $('#private_client').val(identity_client['privateKey']);
+  var difficulty = 50;
+  var task_int = Math.floor(Math.random() * difficulty);
+  var random_private_key = '0x' + (task_int).pad(64);
+  console.log(random_private_key);
+  var random_public_key = EthCrypto.publicKeyByPrivateKey(
+    random_private_key
+  );
+  console.log('!!! RANDOM PUB = '+random_public_key);
+  console.log('!!! TASK = '+task_int);
+  
+  $('#public_block').val(random_public_key);
+  $('#private_block').val(random_private_key);
   
    $('#message, #public_block, #public_client').on('keyup change', async function(){
         var encrypted1 = await EthCrypto.encryptWithPublicKey(
@@ -25,18 +39,42 @@ $(document).ready(function(){
         encrypted2 = JSON.stringify(encrypted2, true); 
         console.log('encrypt message by block = ' + encrypted2);
         
-        var decrypted2 = await EthCrypto.decryptWithPrivateKey(
-            $('#private_block').val(),
-            JSON.parse(encrypted2, true)
-        );
+        $('#encrypted').html(encrypted2);
         
-        console.log(decrypted2);
-        var decrypted1 = await EthCrypto.decryptWithPrivateKey(
-            $('#private_client').val(),
-            JSON.parse(decrypted2, true)
-        );
-        $('#decrypted').html(decrypted1);
-        console.log(decrypted1);
+        // var decrypted2 = await EthCrypto.decryptWithPrivateKey(
+        //     $('#private_block').val(),
+        //     JSON.parse(encrypted2, true)
+        // );
+        
+        // console.log(decrypted2);
+        // var decrypted1 = await EthCrypto.decryptWithPrivateKey(
+        //     $('#private_client').val(),
+        //     JSON.parse(decrypted2, true)
+        // );
+        // $('#decrypted').html(decrypted1);
+        // console.log(decrypted1);
+        
+        // mining time!
+        var task = JSON.parse(encrypted2, true);
+        var solution_public = '';
+        var json_solution_public = '';
+        var tried = 0;
+        var solution_private = 0
+        var process = true;
+        while(process) {
+          tried = Math.floor(Math.random() * difficulty);
+          solution_private = '0x' + (tried).pad(64);
+          
+          solution_public = EthCrypto.publicKeyByPrivateKey(
+            solution_private
+          );
+          console.log('--- tried = ' + tried);
+          console.log(solution_public + ' -- ' + random_public_key);
+          if (solution_public == random_public_key) {
+            process = false;
+          } 
+        }
+        console.log('!!! TASK SOLVED = ' + solution_private);
     });
     $('#message').change();
     
