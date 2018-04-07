@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>101</title>
+        <script
+          src="https://code.jquery.com/jquery-3.3.1.min.js"
+          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+          crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/ricmoo/aes-js/e27b99df/index.js"></script>
+    </head>
+    <body>
+        <div id="form">
+            <p>Введите сообщение:</p>
+            <input type="text" id="msg" value="ok">
+            <p>Введите хеш(256):</p>
+            <input type="text" id="hash" value="00d6cee17c766360c9d9721c8a950b3f4b06464da84cda3cd9987dd7f1a0ea32">
+            <p>К отправке:</p>
+            <div id="result"></div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function(){
+               $('#hash, #msg').on('keyup change', function(){
+                    var key = aesjs.utils.hex.toBytes($('#hash').val());
+                    var textBytes = aesjs.utils.utf8.toBytes($('#msg').val());
+                    var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+                    var encryptedBytes = aesCtr.encrypt(textBytes);
+                    $('#result').html(aesjs.utils.hex.fromBytes(encryptedBytes));
+               });
+               $('#hash').change();
+            });
+        </script>
+    </body>
+</html>
+
