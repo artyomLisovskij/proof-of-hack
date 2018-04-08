@@ -32,6 +32,45 @@ $(document).ready(function(){
 		"constant": true,
 		"inputs": [
 			{
+				"name": "transactionID",
+				"type": "uint256"
+			}
+		],
+		"name": "getTransactionQ",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
 				"name": "",
 				"type": "address"
 			}
@@ -306,14 +345,14 @@ $(document).ready(function(){
 		"type": "event"
 	}
 ];
-  var address = '0x4bbfd6b6a1b7b554ac5012f934c9475b33ea9f5a';
+  var address = '0x2206ca6ea56e23b65e4b88e7a1a9e110fb676122';
   var MyContract = web3.eth.contract(abi);
   var myContractInstance = MyContract.at(address);
   
   myContractInstance.difficulty(function(error, result){
       if (!error) {
           console.log(result);
-          $('.diff').html(result.c[0]);
+          $('.diff').html(result.c);
       } else {
           console.error(error);
       }
@@ -370,12 +409,52 @@ $(document).ready(function(){
     });
     return false;
   });
+  $('.approvee').click(async function(){
+    // we need to:
+    // 0) get difficulty
+    var difficulty = parseInt($('.diff').html());
+    var task_int = Math.floor(Math.random() * difficulty);
+    // 1) calculate result
+    console.log(task_int);
+    var random_private_key = '0x' + (task_int).pad(64);
+    console.log(random_private_key);
+    var random_public_key = EthCrypto.publicKeyByPrivateKey(
+      random_private_key
+    );
+    var encrypted1 = await EthCrypto.encryptWithPublicKey(
+        $('#his_pubkey2').val(),
+        $('#secret2').val()
+    );
+    encrypted1 = JSON.stringify(encrypted1, true); 
+    console.log('encrypt message by client = ' + encrypted1);
+    
+    var encrypted2 = await EthCrypto.encryptWithPublicKey(
+        random_public_key,
+        encrypted1
+    );
+    encrypted2 = JSON.stringify(encrypted2, true); 
+    console.log('encrypt message by block = ' + encrypted2);
+    // string secret, string my_pubkey, string his_pubkey, string _public, string _hash
+    console.log(typeof(encrypted2), typeof(random_public_key), typeof(keccak256(random_private_key)));
+    /*
+    uint transactionID, string secret, string _public, string _hash
+    */
+    myContractInstance.approveTransaction(
+      parseInt($('.tid').val()),
+      encrypted2, 
+      random_public_key, 
+      keccak256(random_private_key),
+      {value: 0, gas: 3000000}, function(err, result){
+        console.log(result);
+    });
+    return false;
+  });
   $('.tid').on('change', function() {
     // check keys for such transaction
-    myContractInstance.getTransaction($(this).val(), function(error, result){
+    myContractInstance.getTransactionQ(parseInt($(this).val()), function(error, result){
       if (!error) {
           // solve
-          
+          console.log(result.c);
       } else {
           console.error(error);
       }
