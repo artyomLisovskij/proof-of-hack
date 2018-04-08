@@ -8,7 +8,7 @@ Number.prototype.pad = function(size) {
 $(document).ready(function(){
   var identity_block = EthCrypto.createIdentity();
   var identity_client = EthCrypto.createIdentity();
-  
+  keccak256(123);
   $('#public_client').val(identity_client['publicKey']);
   $('#private_client').val(identity_client['privateKey']);
   var difficulty = 50;
