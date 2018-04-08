@@ -88,6 +88,8 @@ contract Main {
     struct Transaction {
         address from;
         address to;
+        string pub_from;
+        string pub_to;
         string secret_from;
         string secret_to;
         string pub1; // task to solve #1
@@ -160,10 +162,14 @@ contract Main {
         return true;
     }
 
-    function newTransaction(string secret, address _address, string _public, string _hash) public returns (uint256) {
+    function newTransaction(string secret, string my_pubkey, string his_pubkey, string _public, string _hash) public returns (uint256) {
+        address _my = address(keccak256(my_pubkey));
+        require(_my == msg.sender);
+        address _his = address(keccak256(his_pubkey));
         uint transactionID = numTransactions++;
-        transactions[transactionID] = Transaction(msg.sender, _address, secret, '', _public, '', '', '', _hash, '', false, false);
-        emit New(msg.sender, _address, transactionID);
+        
+        transactions[transactionID] = Transaction(_my, _his, my_pubkey, his_pubkey, secret, '', _public, '', '', '', _hash, '', false, false);
+        emit New(msg.sender, _his, transactionID);
         return transactionID;
     }
     
@@ -179,7 +185,7 @@ contract Main {
         return transactionID;
     }
     
-    function Main() public {
+    function Main() {
         difficulty = 2000;
     }
 }

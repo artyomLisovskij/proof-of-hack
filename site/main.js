@@ -15,7 +15,7 @@ $(document).ready(function(){
     if ($('.tokens').length) {
         var abi = [{"constant":true,"inputs":[],"name":"difficulty","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"erc20tokens","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_privKey1","type":"string"},{"name":"_privKey2","type":"string"},{"name":"transactionID","type":"uint256"}],"name":"mined","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"newDiff","type":"uint256"}],"name":"setDifficulty","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"transactionID","type":"uint256"},{"name":"secret","type":"string"},{"name":"_public","type":"string"},{"name":"_hash","type":"string"}],"name":"approveTransaction","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"x","type":"bytes32"}],"name":"bytes32ToString","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"tokens","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"secret","type":"string"},{"name":"_address","type":"address"},{"name":"_public","type":"string"},{"name":"_hash","type":"string"}],"name":"newTransaction","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"transactionID","type":"uint256"}],"name":"getTransactionPrivs","outputs":[{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"to","type":"address"},{"indexed":false,"name":"id","type":"uint256"}],"name":"New","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"id","type":"uint256"}],"name":"MineMe","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"tokens","type":"uint256"}],"name":"Transfer"
         ,"type":"event"}];
-        var address = '0x8e9c1c3aa6775d7178c29e24dda66eaffec77c3b';
+        var address = '0x80a46c5c0e616043e06f0d8410028ca75df46ae1';
         var MyContract = web3.eth.contract(abi);
         var myContractInstance = MyContract.at(address);
         myContractInstance.balanceOf(web3.eth.accounts[0], function(error, result){
@@ -25,7 +25,21 @@ $(document).ready(function(){
                 console.error(error);
             }
         });
-
+        var events = myContractInstance.allEvents(function(error, log){
+          if (!error) {
+                $('.console .item').append("<p>"+log+"</p>")
+                console.log(log);
+          }
+        });
+        myContractInstance.difficulty(function(error, result){
+            if (!error) {
+                
+                console.log(result);
+                $('.diff').html(result.c[0]);
+            } else {
+                console.error(error);
+            }
+        });
     }
     
 });
