@@ -5,6 +5,10 @@ $(document).ready(function(){
        window.location = 'secret.html';
        return false;
     });
+    $('.changee').click(function(){
+       $('.q1').toggleClass('blur');
+       return false;
+    });
     if ($('.tokens').length) {
         if (typeof web3 !== 'undefined') {
             console.log('Web3 Detected! ' + web3.currentProvider.constructor.name)

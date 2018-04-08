@@ -1329,7 +1329,7 @@ select:-webkit-autofill:focus {
     filter: blur(5px);
     filter: url('blur.svg#blur'); /* путь к svg */
 }
-.sharee{
+.sharee, .approvee, .changee{
     padding: 20px 30px;
     border-radius: 10px;
     background-color: #bbb;
@@ -1347,8 +1347,17 @@ select:-webkit-autofill:focus {
     right:20px;
     top:25px;
 }
-.sharee:hover{
+.approvee .fa{
+    position:absolute;
+    left:20px;
+    top:25px;
+}
+.sharee:hover, .approvee:hover, .changee:hover{
    background-color: #5849af; 
    color:#fff;
    text-decoration:none;
+}
+.sharee:focus, .approvee:focus, .changee:focus {
+    text-decoration:none;
+    color:#fff;
 }

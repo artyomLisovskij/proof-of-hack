@@ -13,11 +13,303 @@ $(document).ready(function(){
       console.log('No Web3 Detected... using HTTP Provider')
       window.web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/hRIiZ0lJgNQBSDvKWVsD"));
   }
-  var abi = [{"constant":true,"inputs":[],"name":"difficulty","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"erc20tokens","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_privKey1","type":"string"},{"name":"_privKey2","type":"string"},{"name":"transactionID","type":"uint256"}],"name":"mined","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"newDiff","type":"uint256"}],"name":"setDifficulty","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"transactionID","type":"uint256"},{"name":"secret","type":"string"},{"name":"_public","type":"string"},{"name":"_hash","type":"string"}],"name":"approveTransaction","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"x","type":"bytes32"}],"name":"bytes32ToString","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"tokens","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"secret","type":"string"},{"name":"_address","type":"address"},{"name":"_public","type":"string"},{"name":"_hash","type":"string"}],"name":"newTransaction","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"transactionID","type":"uint256"}],"name":"getTransactionPrivs","outputs":[{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"to","type":"address"},{"indexed":false,"name":"id","type":"uint256"}],"name":"New","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"id","type":"uint256"}],"name":"MineMe","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"tokens","type":"uint256"}],"name":"Transfer"
-  ,"type":"event"}];
-  var address = '0x80a46c5c0e616043e06f0d8410028ca75df46ae1';
+  var abi = [
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "difficulty",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "erc20tokens",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_privKey1",
+				"type": "string"
+			},
+			{
+				"name": "_privKey2",
+				"type": "string"
+			},
+			{
+				"name": "transactionID",
+				"type": "uint256"
+			}
+		],
+		"name": "mined",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "newDiff",
+				"type": "uint256"
+			}
+		],
+		"name": "setDifficulty",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "transactionID",
+				"type": "uint256"
+			},
+			{
+				"name": "secret",
+				"type": "string"
+			},
+			{
+				"name": "_public",
+				"type": "string"
+			},
+			{
+				"name": "_hash",
+				"type": "string"
+			}
+		],
+		"name": "approveTransaction",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"name": "balance",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "x",
+				"type": "bytes32"
+			}
+		],
+		"name": "bytes32ToString",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "secret",
+				"type": "string"
+			},
+			{
+				"name": "my_pubkey",
+				"type": "string"
+			},
+			{
+				"name": "his_pubkey",
+				"type": "string"
+			},
+			{
+				"name": "_public",
+				"type": "string"
+			},
+			{
+				"name": "_hash",
+				"type": "string"
+			}
+		],
+		"name": "newTransaction",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"name": "tokens",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [
+			{
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "transactionID",
+				"type": "uint256"
+			}
+		],
+		"name": "getTransactionPrivs",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "New",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "MineMe",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "tokens",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	}
+];
+  var address = '0x4bbfd6b6a1b7b554ac5012f934c9475b33ea9f5a';
   var MyContract = web3.eth.contract(abi);
   var myContractInstance = MyContract.at(address);
+  
   myContractInstance.difficulty(function(error, result){
       if (!error) {
           console.log(result);
@@ -38,55 +330,57 @@ $(document).ready(function(){
   var publicprivate2 = EthCrypto.publicKeyByPrivateKey(
       '0x' + (parseInt($('.private2').val())).pad(64)
     );
-  console.log('Receiver public is: '+ publicprivate2);
+  $('#his_pubkey1').val(publicprivate2);
   $('.sharee').click(async function(){
-    const EthCrypto2 = require('eth-crypto');
     // we need to:
     // 0) get difficulty
     var difficulty = parseInt($('.diff').html());
     var task_int = Math.floor(Math.random() * difficulty);
     // 1) calculate result
+    console.log(task_int);
     var random_private_key = '0x' + (task_int).pad(64);
+    console.log(random_private_key);
     var random_public_key = EthCrypto.publicKeyByPrivateKey(
       random_private_key
     );
+    var encrypted1 = await EthCrypto.encryptWithPublicKey(
+        $('#his_pubkey1').val(),
+        $('#secret1').val()
+    );
+    encrypted1 = JSON.stringify(encrypted1, true); 
+    console.log('encrypt message by client = ' + encrypted1);
     
-    const myPromise = new Promise(function(resolve, reject) {
-        var result =  EthCrypto2.encryptWithPublicKey(
-            $('#his_pubkey1').val(),
-            $('#secret1').val()
-        );
-        resolve(result);
-      
-    })
-    myPromise.then(function whenOk(response) {
-      encrypted1 = JSON.stringify(response, true); 
-      console.log('encrypt message by client = ' + encrypted1);
-        const myPromise2 = new Promise(function(resolve, reject) {
-            var encrypted2 = EthCrypto2.encryptWithPublicKey(
-                random_public_key,
-                encrypted1
-            );
-            encrypted2 = JSON.stringify(encrypted2, true); 
-            console.log('encrypt message by block = ' + encrypted2);
-            resolve(encrypted2);
-        })
-        myPromise2.then(function whenOk(response) {
-          myContractInstance.newTransaction(
-            response, 
-            $('#my_pubkey1').val(), 
-            $('#his_pubkey1').val(), 
-            random_public_key, 
-            keccak256(random_private_key),
-            {value: 0, gas: 3000000}, function(err, result){
-              $('.tid').val(result.c[0]).show();
-          });
-        });
+    var encrypted2 = await EthCrypto.encryptWithPublicKey(
+        random_public_key,
+        encrypted1
+    );
+    encrypted2 = JSON.stringify(encrypted2, true); 
+    console.log('encrypt message by block = ' + encrypted2);
+    // string secret, string my_pubkey, string his_pubkey, string _public, string _hash
+    console.log(typeof(encrypted2), typeof(random_public_key), typeof(keccak256(random_private_key)));
+    myContractInstance.newTransaction(
+      encrypted2, 
+      $('#my_pubkey1').val(), 
+      $('#his_pubkey1').val(), 
+      random_public_key, 
+      keccak256(random_private_key),
+      {value: 0, gas: 3000000}, function(err, result){
+        console.log(result);
+        $('.tid').val(result.c[0]);
     });
-      
-    
+    return false;
   });
-    
+  $('.tid').on('change', function() {
+    // check keys for such transaction
+    myContractInstance.getTransaction($(this).val(), function(error, result){
+      if (!error) {
+          // solve
+          
+      } else {
+          console.error(error);
+      }
+    });
+  });
 });
 
 },{"eth-crypto":167}],2:[function(require,module,exports){

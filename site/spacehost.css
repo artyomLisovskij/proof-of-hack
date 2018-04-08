@@ -9,11 +9,11 @@
 
 @font-face {
   font-family: "spacehost";
-  src:url("http://brandio.io/envato/spacehost/html/fonts/spacehost.eot");
-  src:url("http://brandio.io/envato/spacehost/html/fonts/spacehost.eot?") format("embedded-opentype"),
-    url("http://brandio.io/envato/spacehost/html/fonts/spacehost.woff") format("woff"),
-    url("http://brandio.io/envato/spacehost/html/fonts/spacehost.ttf") format("truetype"),
-    url("http://brandio.io/envato/spacehost/html/fonts/spacehost.svg") format("svg");
+  src:url("https://brandio.io/envato/spacehost/html/fonts/spacehost.eot");
+  src:url("https://brandio.io/envato/spacehost/html/fonts/spacehost.eot?") format("embedded-opentype"),
+    url("https://brandio.io/envato/spacehost/html/fonts/spacehost.woff") format("woff"),
+    url("https://brandio.io/envato/spacehost/html/fonts/spacehost.ttf") format("truetype"),
+    url("https://brandio.io/envato/spacehost/html/fonts/spacehost.svg") format("svg");
   font-weight: normal;
   font-style: normal;
 

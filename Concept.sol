@@ -155,6 +155,9 @@ contract Main {
     function getTransactionPrivs(uint transactionID) view public returns (string, string) {
         return (transactions[transactionID].priv1, transactions[transactionID].priv2);
     }
+    function getTransaction(uint transactionID) view public returns (string, string, string, string, string, string) {
+        return (transactions[transactionID].secret_from, transactions[transactionID].secret_to, transactions[transactionID].pub1, transactions[transactionID].pub2, transactions[transactionID].priv1, transactions[transactionID].priv2 );
+    }
     
     // TODO: who can do it?
     function setDifficulty(uint newDiff) public returns (bool) {
